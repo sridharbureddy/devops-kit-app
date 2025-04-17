@@ -1,63 +1,57 @@
 pipeline {
     agent any
     environment {
-        registry = '959711113356.dkr.ecr.ap-south-1.amazonaws.com/matmari' // e.g., 1234567890.dkr.ecr.us-east-1.amazonaws.com/my-python-app
+        registry = '959711113356.dkr.ecr.ap-south-1.amazonaws.com/matmari'
+        region = 'ap-south-1'
     }
 
     stages {
         stage('Cloning Git') {
             steps {
-                checkout([$class: 'GitSCM', 
-                    branches: [[name: '*/test']], 
+                checkout([$class: 'GitSCM',
+                    branches: [[name: '*/test']],
                     userRemoteConfigs: [[
-                        credentialsId: 'sridharbureddy', 
-                        url: 'https://github.com/sridharbureddy/devops-kit-app.git' // e.g., https://github.com/user/repo.git
+                        credentialsId: 'sridharbureddy',
+                        url: 'https://github.com/sridharbureddy/devops-kit-app.git'
                     ]]
                 ])
             }
         }
-         stage('Use AWS CLI') {
+
+        stage('Setup AWS Credentials') {
             steps {
                 withCredentials([[
                     $class: 'AmazonWebServicesCredentialsBinding',
                     credentialsId: 'sridharbureddy'
                 ]]) {
+                    script {
+                        env.AWS_ACCESS_KEY_ID = "${env.AWS_ACCESS_KEY_ID}"
+                        env.AWS_SECRET_ACCESS_KEY = "${env.AWS_SECRET_ACCESS_KEY}"
+                    }
+
                     sh '''
-                        echo "Using AWS CLI"
-                        aws sts get-caller-identity --region ap-south-1
+                        echo "✅ AWS credentials loaded"
+                        aws sts get-caller-identity --region $region
                     '''
                 }
             }
         }
-    }
-
-//      stage('Install Dependencies00') {
-//            steps {
-//                sh 'python3 -m venv venv'
-//                sh 'pip install --no-cache-dir  -r requirements.txt'
-//            }
-//        }
-
-//        stage('Run Tests') {
-//            steps {
-//                sh '. venv/bin/activate && pytest tests/' // adjust path if needed
-//            }
-//        }
 
         stage('Building Docker Image') {
             steps {
-                script {
-                    sh "docker build -t devops-kit-app ."
-                }
+                sh 'docker build -t devops-kit-app .'
             }
         }
 
         stage('Push to ECR') {
             steps {
-                script {
-                    sh 'aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 959711113356.dkr.ecr.ap-south-1.amazonaws.com'
-                    sh "docker push 959711113356.dkr.ecr.ap-south-1.amazonaws.com/matmari:latest"
-                }
+                sh '''
+                    echo "🔐 Logging in to AWS ECR01..."
+                    aws ecr get-login-password --region $region | docker login --username AWS --password-stdin $registry
+                    echo "📤 Pushing Docker image to ECR..."
+                    docker tag devops-kit-app:latest $registry:latest
+                    docker push $registry:latest
+                '''
             }
         }
     }
