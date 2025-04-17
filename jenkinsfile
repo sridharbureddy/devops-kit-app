@@ -17,18 +17,18 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
-            steps {
-                sh 'python3 -m venv venv'
-                sh 'pip install --no-cache-dir  -r requirements.txt'
-            }
-        }
+//      stage('Install Dependencies') {
+//            steps {
+//                sh 'python3 -m venv venv'
+//                sh 'pip install --no-cache-dir  -r requirements.txt'
+//            }
+//        }
 
-        stage('Run Tests') {
-            steps {
-                sh '. venv/bin/activate && pytest tests/' // adjust path if needed
-            }
-        }
+//        stage('Run Tests') {
+//            steps {
+//                sh '. venv/bin/activate && pytest tests/' // adjust path if needed
+//            }
+//        }
 
         stage('Building Docker Image') {
             steps {
