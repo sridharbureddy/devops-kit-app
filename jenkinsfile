@@ -17,7 +17,7 @@ pipeline {
             }
         }
 
-//      stage('Install Dependencies') {
+//      stage('Install Dependencies00') {
 //            steps {
 //                sh 'python3 -m venv venv'
 //                sh 'pip install --no-cache-dir  -r requirements.txt'
