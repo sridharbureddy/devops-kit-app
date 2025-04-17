@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-kit-deployment
+  labels:
+    app: devops-kit-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: devops-kit-app
+  template:
+    metadata:
+      labels:
+        app: devops-kit-app
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: minikube
+      containers:
+        - name: devops-kit-container
+          image: 764906773278.dkr.ecr.ap-south-1.amazonaws.com/devops-kit-app:latest
+          ports:
+            - containerPort: 5000
+          imagePullPolicy: Always

@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+    environment {
+        registry = '959711113356.dkr.ecr.ap-south-1.amazonaws.com/matmari' // e.g., 1234567890.dkr.ecr.us-east-1.amazonaws.com/my-python-app
+    }
+
+    stages {
+        stage('Cloning Git') {
+            steps {
+                checkout([$class: 'GitSCM', 
+                    branches: [[name: '*/Dev']], 
+                    userRemoteConfigs: [[
+                        credentialsId: 'sridharbureddy', 
+                        url: 'https://github.com/sridharbureddy/devops-kit-app.git' // e.g., https://github.com/user/repo.git
+                    ]]
+                ])
+            }
+        }
+
+//      stage('Install Dependencies') {
+//            steps {
+//                sh 'python3 -m venv venv'
+//                sh 'pip install --no-cache-dir  -r requirements.txt'
+//            }
+//        }
+
+//        stage('Run Tests') {
+//            steps {
+//                sh '. venv/bin/activate && pytest tests/' // adjust path if needed
+//            }
+//        }
+
+        stage('Building Docker Image') {
+            steps {
+                script {
+                    sh "docker build -t devops-kit-app ."
+                }
+            }
+        }
+
+        stage('Push to ECR') {
+            steps {
+                script {
+                    sh 'aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 959711113356.dkr.ecr.ap-south-1.amazonaws.com'
+                    sh "docker push 959711113356.dkr.ecr.ap-south-1.amazonaws.com/matmari:latest"
+                }
+            }
+        }
+    }
+}

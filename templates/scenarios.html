@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Mock Interview Scenarios - DevOps Kit{% endblock %}
+{% block content %}
+  <h2>Mock DevOps Interview Scenarios</h2>
+
+  <h3>🔥 Scenario 1: On-Call Incident</h3>
+  <p>Your monitoring system alerts that CPU usage is at 100% on a production node. Walk through how you would respond.</p>
+  <ul>
+    <li>What tools would you use?</li>
+    <li>How would you identify the root cause?</li>
+    <li>How would you communicate the issue to your team/stakeholders?</li>
+  </ul>
+
+  <h3>🚀 Scenario 2: Rolling Out a Blue-Green Deployment</h3>
+  <p>Describe how you would implement a blue-green deployment strategy using Kubernetes and a CI/CD tool of your choice.</p>
+  <ul>
+    <li>How do you avoid downtime?</li>
+    <li>How do you test the green environment before switching?</li>
+    <li>How do you roll back if needed?</li>
+  </ul>
+
+  <h3>🔐 Scenario 3: Securing Secrets</h3>
+  <p>Your team is using plain-text secrets in Kubernetes. What would you recommend?</p>
+  <ul>
+    <li>What are best practices for secret management?</li>
+    <li>Would you use tools like HashiCorp Vault, AWS Secrets Manager, or Sealed Secrets?</li>
+    <li>How would you audit secret usage?</li>
+  </ul>
+
+  <p><strong>Tip:</strong> Practice answering out loud like in a real interview!</p>
+{% endblock %}

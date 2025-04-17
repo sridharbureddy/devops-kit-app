@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{% block title %}DevOps Kit{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <h1>DevOps Interview Kit</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/interview">Interview Questions</a>
+      <a href="/tools">Tools & Tutorials</a>
+      <a href="/scenarios">Mock Scenarios</a>
+      <a href="/blog">Blog</a>
+      <a href="/resources">Resources</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  <footer>
+    <p>&copy; 2025 DevOps Kit</p>
+  </footer>
+</body>
+</html>
