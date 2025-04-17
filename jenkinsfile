@@ -16,6 +16,20 @@ pipeline {
                 ])
             }
         }
+         stage('Use AWS CLI') {
+            steps {
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'sridharbureddy'
+                ]]) {
+                    sh '''
+                        echo "Using AWS CLI"
+                        aws sts get-caller-identity --region us-east-1
+                    '''
+                }
+            }
+        }
+    }
 
 //      stage('Install Dependencies00') {
 //            steps {
