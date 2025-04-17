@@ -8,7 +8,7 @@ pipeline {
         stage('Cloning Git') {
             steps {
                 checkout([$class: 'GitSCM', 
-                    branches: [[name: '*/Dev']], 
+                    branches: [[name: '*/test']], 
                     userRemoteConfigs: [[
                         credentialsId: 'sridharbureddy', 
                         url: 'https://github.com/sridharbureddy/devops-kit-app.git' // e.g., https://github.com/user/repo.git
