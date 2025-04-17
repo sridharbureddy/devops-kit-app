@@ -24,7 +24,7 @@ pipeline {
                 ]]) {
                     sh '''
                         echo "Using AWS CLI"
-                        aws sts get-caller-identity --region us-east-1
+                        aws sts get-caller-identity --region ap-south-1
                     '''
                 }
             }
